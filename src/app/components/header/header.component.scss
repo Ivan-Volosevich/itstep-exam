@@ -1,0 +1,15 @@
+.header {
+  background-color: black;
+  border-bottom: solid 10px #fff;
+  padding: 20px 30px;
+
+  &-title {
+    color: aquamarine;
+
+    span {
+      font-size: 36px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+.footer {
+  background-color: black;
+  border-top: solid 10px #fff;
+  padding: 10px 30px;
+
+  &-content {
+    color: aquamarine;
+    text-align: center;
+
+    span {
+      font-size: 16px;
+      font-weight: 800;
+
+      a {
+        color: #fff;
+        // text-decoration: none;
+      }
+    }
+  }
+}
