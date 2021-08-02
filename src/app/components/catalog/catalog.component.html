@@ -5,7 +5,7 @@
     </div>
 
     <div class="catalog-search-panel-searchinsert">
-      <input type="search" name="search-insert-top" id="search-insert" placeholder="search products">
+      <input type="search" name="search-insert-top" id="search-insert" placeholder="search products" [(ngModel)]="searchText" (input)="onSearch()">
       <label for="search-insert"></label>
     </div>
 
@@ -20,30 +20,59 @@
 
   <div class="catalog-products">
 
-    <div class="catalog-products-list">
-      <ul>
-        <li *ngFor="let item of items">
-          <input type="radio" id="{{item.id}}" name="product">
-          <label for="{{item.id}}">
-
-            <div class="catalog-products-list-left">
-              <div class="icon">
-                <img src="{{item.thumbnailUrl}}" alt="">
+    <ng-container *ngIf="!searchText">
+      <div class="catalog-products-list">
+        <ul>
+          <li *ngFor="let item of items">
+            <input type="radio" id="{{item.id}}" name="product">
+            <label for="{{item.id}}">
+  
+              <div class="catalog-products-list-left">
+                <div class="icon">
+                  <img src="{{item.thumbnailUrl}}" alt="">
+                </div>
+                <div class="descrition">
+                  <p>{{item.name}}</p>
+                  <div class="descrition-span"><span>{{item.description}}</span></div>
+                </div>
               </div>
-              <div class="descrition">
-                <p>{{item.name}}</p>
-                <div class="descrition-span"><span>{{item.description}}</span></div>
+  
+              <div class="deletebtn">
+                <button class="delete-btn" (click)="deleteItem()">Delete</button>
               </div>
-            </div>
+  
+            </label>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
 
-            <div class="deletebtn">
-              <button class="delete-btn" (click)="deleteItem()" [attr.data-deletebtn]="item.id">Delete</button>
-            </div>
-
-          </label>
-        </li>
-      </ul>
-    </div>
+    <ng-container *ngIf="searchText">
+      <div class="catalog-products-list">
+        <ul>
+          <li *ngFor="let item of filteredItems">
+            <input type="radio" id="{{item.id}}" name="product">
+            <label for="{{item.id}}">
+  
+              <div class="catalog-products-list-left">
+                <div class="icon">
+                  <img src="{{item.thumbnailUrl}}" alt="">
+                </div>
+                <div class="descrition">
+                  <p>{{item.name}}</p>
+                  <div class="descrition-span"><span>{{item.description}}</span></div>
+                </div>
+              </div>
+  
+              <div class="deletebtn">
+                <button class="delete-btn" (click)="deleteItem()">Delete</button>
+              </div>
+  
+            </label>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
 
     <div class="catalog-products-details">
 

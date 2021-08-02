@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CatalogService } from '../../services/catalog.service';
 import { CatalogItem } from './catalog';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-catalog',
@@ -11,14 +13,18 @@ import { ActivatedRoute } from '@angular/router';
 export class CatalogComponent implements OnInit {
   items: CatalogItem[] = [];
   item: CatalogItem | undefined;
+  filteredItems: CatalogItem[] = [];
+  searchText = "";
 
   constructor(
     private catalogService: CatalogService,
     private route: ActivatedRoute,
+    private http: HttpClient
     ) { }
 
   ngOnInit(): void {
-    this.getAll();
+    this.http.get('https://msbit-exam-products-store.firebaseio.com/products.json')
+    .subscribe
     this.getItem();
   }
 
@@ -28,10 +34,10 @@ export class CatalogComponent implements OnInit {
   }
 
   getItem(): void {
-    console.log(this.item?.id)
-    const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
-    this.catalogService.getItem(id)
-      .subscribe(item => this.item = item)
+    // console.log(this.item?.id)
+    // const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
+    // this.catalogService.getItem(id)
+    //   .subscribe(item => this.item = item)
   }
 
   addItem() {
@@ -39,8 +45,18 @@ export class CatalogComponent implements OnInit {
   }
 
   deleteItem() {
-    // const delBtn = attributes['data-deletebtn'].value;
-    // console.log(delBtn);
+    // this.items = this.items.filter((el) => {
+    //   return this.items.id !== id;
+    // })
+  }
+
+  onSearch() {
+    if (this.searchText.length > 0) {
+      this.filteredItems = this.items.filter((el) => {
+        return el.name?.includes(this.searchText) || el.description?.includes(this.searchText);
+      })
+    }
+    console.log(this.searchText);
   }
 
 }
