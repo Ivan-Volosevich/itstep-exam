@@ -1,7 +1,7 @@
 <section class="catalog">
   <div class="catalog-search-panel">
     <div class="catalog-search-panel-addbtn">
-      <button class="add-btn">+ Add</button>
+      <button class="add-btn" (click)="addItem()">+ Add</button>
     </div>
 
     <div class="catalog-search-panel-searchinsert">
@@ -37,7 +37,7 @@
             </div>
 
             <div class="deletebtn">
-              <button class="delete-btn">Delete</button>
+              <button class="delete-btn" (click)="deleteItem()" [attr.data-deletebtn]="item.id">Delete</button>
             </div>
 
           </label>
@@ -48,7 +48,7 @@
     <div class="catalog-products-details">
 
       <div class="catalog-products-details-title">
-        Product 1 Details
+        Details
       </div>
 
       <div class="catalog-products-details-icon">
@@ -78,5 +78,17 @@
 
   </div>
 
-  <div class="catalog-navigation"></div>
+  <div class="catalog-navigation">
+    <div class="catalog-navigation-leftbtn">
+      <button class="left-btn"></button>
+      Prev Page
+    </div>
+    <div class="catalog-navigation-page">
+      1 of 5
+    </div>
+    <div class="catalog-navigation-rightbtn">
+      Next Page
+      <button class="right-btn"></button>
+    </div>
+  </div>
 </section>

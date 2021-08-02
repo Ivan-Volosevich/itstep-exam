@@ -19,13 +19,15 @@ export class CatalogService {
   getAll(): Observable<CatalogItem[]> {
     return this.http.get<CatalogItem[]>(this.catalogUrl)
       .pipe(
+        tap(_ => console.log('fetched items')),
         catchError(this.handleError<CatalogItem[]>('getAll', []))
       );
   }
 
   getItem(id: number): Observable<CatalogItem> {
-    const url = '${this.catalogUrl}/${id}';
+    const url = '${this.catalogUrl}.${id}';
     return this.http.get<CatalogItem>(url).pipe(
+      tap(_ => console.log(`fetched item id=${id}`)),
       catchError(this.handleError<CatalogItem>('getItem id=${id}'))
     );
   }
