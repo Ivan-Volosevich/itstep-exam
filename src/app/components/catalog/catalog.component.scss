@@ -1,6 +1,7 @@
 .catalog {
-  background-color: aquamarine;
+  background-color: #fff;
   padding: 20px 30px;
+  margin: 92px 0 30px;
 
   &-search-panel {
     display: flex;
@@ -17,12 +18,10 @@
         box-shadow: 2px 2px 3px rgb(0 0 0 / 50%);
 
         &:active {
-          background-color: aquamarine;
-          color: #000;
-          border: solid 1px #000;
+          color: aquamarine;
+          border: solid 1px aquamarine;
         }
       }
-
     }
 
     &-searchinsert {
@@ -53,26 +52,170 @@
 
   &-products {
     margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 
     &-list {
+      width: 55%;
 
       ul {
         list-style: none;
+        height: 550px;
+        overflow-y: scroll;
 
         li {
-          display: flex;
-          gap: 10px;
           border: 2px solid #000;
-          width: 50%;
+          margin: 10px 0;
 
-          .icon {
-            max-width: 100px;
-            max-height: 90px;
+          &:first-child {
+            margin-top: 0;
+          }
 
-            img {
-              max-width: 100px;
-              max-height: 90px;
+          &:hover, &:active, &:focus {
+            background-color: #000;
+            color: aquamarine;
+          }
+
+          input {
+            display: none;
+
+            &:checked+label {
+              background-color: #000;
+              color: aquamarine;
             }
+          }
+
+          label {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px;
+
+            .catalog-products-list-left {
+              display: flex;
+              gap: 20px;
+
+              .icon {
+                max-width: 100px;
+                max-height: 100px;
+
+                img {
+                  max-width: 100px;
+                  max-height: 100px;
+                }
+              }
+
+              .descrition {
+
+                p {
+                  font-weight: bold;
+                  font-size: 20px;
+                  margin-bottom: 5px;
+                  text-transform: capitalize;
+                }
+
+                &-span {
+                  span {
+                    font-size: 16px;
+                  }
+
+                  &::first-letter {
+                    text-transform: uppercase;
+                  }
+                }
+              }
+            }
+
+            .deletebtn {
+              display: flex;
+              align-items: flex-end;
+
+              .delete-btn {
+                border: none;
+                width: 100px;
+                height: 30px;
+                font-size: 20px;
+                background-color: #FFD466;
+                color: #000;
+                box-shadow: 0px 0px 10px rgb(255 255 255 / 90%);
+
+                &:active {
+                  background-color: #B39750;
+                  color: #000;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &-details {
+      width: 45%;
+      border: 2px solid #000;
+      padding: 20px;
+      font-size: 20px;
+
+      &-title {
+        position: relative;
+        font-size: 24px;
+        font-weight: 700;
+        top: -36px;
+        background-color: #fff;
+        width: 200px;
+        text-align: center;
+      }
+
+      &-icon {
+        width: 200px;
+        height: 200px;
+        img {
+          width: 200px;
+          height: 200px;
+        }
+      }
+
+      &-name {
+
+        input {
+          width: 70%;
+          height: 25px;
+        }
+      }
+
+      &-description {
+
+        textarea {
+          min-width: 70%;
+          min-height: 100px;
+          max-width: 70%;
+          max-height: 100px;
+        }
+      }
+
+      &-price {
+
+        input {
+          height: 25px;
+        }
+      }
+
+      &-savebtn {
+        text-align: right;
+
+        .save-btn {
+          border: none;
+          width: 100px;
+          height: 30px;
+          font-size: 20px;
+          background-color: #000;
+          color: #fff;
+          box-shadow: 2px 2px 3px rgb(0 0 0 / 50%);
+
+          &:active {
+            color: aquamarine;
+            border: solid 1px aquamarine;
           }
         }
       }

@@ -19,25 +19,64 @@
   </div>
 
   <div class="catalog-products">
+
     <div class="catalog-products-list">
       <ul>
+        <li *ngFor="let item of items">
+          <input type="radio" id="{{item.id}}" name="product">
+          <label for="{{item.id}}">
 
-        <li>
-          <div class="icon">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Picture_icon_BLACK.svg" alt="">
-          </div>
-          <div class="descrition">
-            <p>Product 1</p>
-            <span>Product 1 description</span>
-          </div>
-          <div class="deletebtn">
-            <button class="delete-btn">Delete</button>
-          </div>
+            <div class="catalog-products-list-left">
+              <div class="icon">
+                <img src="{{item.thumbnailUrl}}" alt="">
+              </div>
+              <div class="descrition">
+                <p>{{item.name}}</p>
+                <div class="descrition-span"><span>{{item.description}}</span></div>
+              </div>
+            </div>
+
+            <div class="deletebtn">
+              <button class="delete-btn">Delete</button>
+            </div>
+
+          </label>
         </li>
-
       </ul>
     </div>
-    <div class="catalog-products-list-details"></div>
+
+    <div class="catalog-products-details">
+
+      <div class="catalog-products-details-title">
+        Product 1 Details
+      </div>
+
+      <div class="catalog-products-details-icon">
+        <img src="" alt="">
+      </div>
+
+      <div class="catalog-products-details-name">
+        <p>Name</p>
+        <input type="text">
+      </div>
+
+      <div class="catalog-products-details-description">
+        <p>Description</p>
+        <textarea></textarea>
+      </div>
+
+      <div class="catalog-products-details-price">
+        <p>Price</p>
+        <input type="text">
+      </div>
+
+      <div class="catalog-products-details-savebtn">
+        <button class="save-btn">Save</button>
+      </div>
+
+    </div>
+
   </div>
+
   <div class="catalog-navigation"></div>
 </section>
