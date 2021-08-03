@@ -10,13 +10,13 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class CatalogService {
 
-  private catalogUrl = 'https://msbit-exam-products-store.firebaseio.com/products.json';
+  catalogUrl = 'https://msbit-exam-products-store.firebaseio.com/products.json';
 
   constructor(
     private http: HttpClient,
   ) { }
 
-  getAll(): Observable<CatalogItem[]> {
+  public getAll(): Observable<CatalogItem[]> {
     return this.http.get<CatalogItem[]>(this.catalogUrl)
       .pipe(
         tap(_ => console.log('fetched items')),
@@ -24,7 +24,7 @@ export class CatalogService {
       );
   }
 
-  getItem(id: number): Observable<CatalogItem> {
+  public getItem(id: number): Observable<CatalogItem> {
     const url = '${this.catalogUrl}.${id}';
     return this.http.get<CatalogItem>(url).pipe(
       tap(_ => console.log(`fetched item id=${id}`)),

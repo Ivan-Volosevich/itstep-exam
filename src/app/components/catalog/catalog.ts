@@ -5,5 +5,5 @@ export interface CatalogItem {
   name?: string;
   price?: number;
   thumbnailUrl?: any;
-  url?: any;
+  url?: any
 }

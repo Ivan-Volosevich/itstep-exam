@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CatalogService } from '../../services/catalog.service';
 import { CatalogItem } from './catalog';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Component({
@@ -11,52 +11,59 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./catalog.component.scss']
 })
 export class CatalogComponent implements OnInit {
+  catalogUrl = 'https://msbit-exam-products-store.firebaseio.com/products.json';
   items: CatalogItem[] = [];
-  item: CatalogItem | undefined;
-  filteredItems: CatalogItem[] = [];
+  filteredItems: any;
   searchText = "";
+  item!: any;
+
+  // items: CatalogItem[] = [];
+  // // item: CatalogItem | undefined;
+
 
   constructor(
     private catalogService: CatalogService,
     private route: ActivatedRoute,
-    private http: HttpClient
     ) { }
 
   ngOnInit(): void {
-    this.http.get('https://msbit-exam-products-store.firebaseio.com/products.json')
-    .subscribe
-    this.getItem();
+    this.catalogService.getAll().subscribe(items => this.items = items);
+    // this.getAll();
+    // this.getItem();
+    this.catalogService.getAll().forEach(el => el.forEach(item => this.item = item));
+    console.log('item: ', this.item);
   }
 
-  getAll(): void {
-    this.catalogService.getAll()
-      .subscribe(items => this.items = items);
-  }
+  // getAll(): void {
+  //   this.catalogService.getAll()
+  //     .subscribe(items => this.items = items);
+  // }
 
-  getItem(): void {
+  // getItem(): void {
     // console.log(this.item?.id)
     // const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
     // this.catalogService.getItem(id)
     //   .subscribe(item => this.item = item)
-  }
+  // }
 
   addItem() {
-    this.items.push({id: (new Date()).getTime(), name: 'Product ' + (new Date()).getTime(), description: 'add desc', thumbnailUrl: this.items[this.items.length-1].thumbnailUrl});
+    this.items.unshift({id: (new Date()).getTime(), name: 'Product ' + (new Date()).getTime(), description: 'add desc', thumbnailUrl: this.items[this.items.length-1].thumbnailUrl});
   }
 
   deleteItem() {
-    // this.items = this.items.filter((el) => {
-    //   return this.items.id !== id;
-    // })
+    console.log('this.item.id', this.item.id)
+    this.items = this.items.filter((el) => {
+      console.log(el.id, this.item.id)
+      return el.id !== this.item.id;
+    })
   }
 
   onSearch() {
     if (this.searchText.length > 0) {
-      this.filteredItems = this.items.filter((el) => {
+      this.filteredItems = this.items.filter((el: any) => {
         return el.name?.includes(this.searchText) || el.description?.includes(this.searchText);
       })
     }
-    console.log(this.searchText);
   }
 
 }
