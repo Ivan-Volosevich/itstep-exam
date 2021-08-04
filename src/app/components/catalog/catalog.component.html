@@ -13,7 +13,7 @@
       <span>Sort by</span>
       <select size="1">
         <option value="name">name</option>
-        <option value="recently-added">recently added</option>
+        <option value="recently-added" (change)="sortByRecentlyAdded()">recently added</option>
       </select>
     </div>
   </div>
@@ -23,7 +23,7 @@
     <ng-container *ngIf="!searchText">
       <div class="catalog-products-list">
         <ul>
-          <li *ngFor="let item of items">
+          <li *ngFor="let item of items" (change)="onItemClicked($event.target)" (change)="setFormValue()">
             <input type="radio" id="{{item.id}}" name="product">
             <label for="{{item.id}}">
 
@@ -38,7 +38,7 @@
               </div>
 
               <div class="deletebtn">
-                <button (ngModel)="item.id" class="delete-btn" (click)="deleteItem()">Delete</button>
+                <button value="{{item.id}}" class="delete-btn" (click)="deleteItem($event.target)">Delete</button>
               </div>
 
             </label>
@@ -50,7 +50,7 @@
     <ng-container *ngIf="searchText">
       <div class="catalog-products-list">
         <ul>
-          <li *ngFor="let item of filteredItems">
+          <li *ngFor="let item of filteredItems" (change)="onItemClicked($event.target)" (change)="setFormValue()">
             <input type="radio" id="{{item.id}}" name="product">
             <label for="{{item.id}}">
 
@@ -65,7 +65,7 @@
               </div>
 
               <div class="deletebtn">
-                <button class="delete-btn" (click)="deleteItem()">Delete</button>
+                <button value="{{item.id}}" class="delete-btn" (click)="deleteItem($event.target)">Delete</button>
               </div>
 
             </label>
@@ -76,32 +76,40 @@
 
     <div class="catalog-products-details">
 
-      <div class="catalog-products-details-title">
-        Details
+      <div class="catalog-products-details-title-first" data-first-title="forDetails">
+        Choose product for Details
       </div>
 
-      <div class="catalog-products-details-icon">
-        <img src="" alt="">
-      </div>
+      <form [formGroup]="productDetailsForm" *ngIf="itemChosen()">
 
-      <div class="catalog-products-details-name">
-        <p>Name</p>
-        <input type="text">
-      </div>
+        <div class="catalog-products-details-title">
+          {{chosenItem[0].name}} Details
+        </div>
 
-      <div class="catalog-products-details-description">
-        <p>Description</p>
-        <textarea></textarea>
-      </div>
+        <div class="catalog-products-details-icon">
+          <img src="{{chosenItem[0].url}}" alt="">
+        </div>
 
-      <div class="catalog-products-details-price">
-        <p>Price</p>
-        <input type="text">
-      </div>
+        <div class="catalog-products-details-name">
+          <p>Name</p>
+          <input type="text" value="{{chosenItem[0].name}}" formControlName="productName">
+        </div>
 
-      <div class="catalog-products-details-savebtn">
-        <button class="save-btn">Save</button>
-      </div>
+        <div class="catalog-products-details-description">
+          <p>Description</p>
+          <textarea formControlName="productDescription" value="{{chosenItem[0].description}}"></textarea>
+        </div>
+
+        <div class="catalog-products-details-price">
+          <p>Price</p>
+          <input type="text" value="{{chosenItem[0].price}}" formControlName="productPrice">$
+        </div>
+
+        <div class="catalog-products-details-savebtn">
+          <button class="save-btn" (click)="saveChangesOfProduct()">Save</button>
+        </div>
+
+      </form>
 
     </div>
 
@@ -112,8 +120,8 @@
       <button class="left-btn"></button>
       Prev Page
     </div>
-    <div class="catalog-navigation-page">
-      1 of 5
+    <div class="catalog-navigation-page" (productsPage)="productsPage">
+      {{productsPage}} of 5
     </div>
     <div class="catalog-navigation-rightbtn">
       Next Page
