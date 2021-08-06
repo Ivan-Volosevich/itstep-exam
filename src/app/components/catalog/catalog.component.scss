@@ -73,6 +73,11 @@
 
     &-list {
       width: 55%;
+      height: 556px;
+
+      @media (max-width: 832px) {
+        height: 100%;
+      }
 
       @media (max-width: 767px) {
         width: 100%;
@@ -80,14 +85,12 @@
 
       ul {
         list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
 
         li {
           border: 2px solid #000;
-          margin: 10px 0;
-
-          &:first-child {
-            margin-top: 0;
-          }
 
           &:hover, &:active, &:focus {
             background-color: #000;
@@ -118,12 +121,12 @@
               gap: 20px;
 
               .icon {
-                max-width: 100px;
-                max-height: 100px;
+                width: 100px;
+                height: 100px;
 
                 img {
-                  max-width: 100px;
-                  max-height: 100px;
+                  width: 100px;
+                height: 100px;
                 }
               }
 

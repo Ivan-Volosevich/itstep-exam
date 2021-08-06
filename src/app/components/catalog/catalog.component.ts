@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ElementRef, Injectable, OnInit, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, Injectable, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CatalogService } from '../../services/catalog.service';
 import { CatalogItem } from './catalog';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormControlName, FormGroup, FormGroupName, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupSuccessComponent } from '../popup-success/popup-success.component';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class CatalogComponent implements OnInit {
   selectedInput: any;
   submitSaveBtn!: string;
   itemsToShow = 4;
+  currentPageQuantity: number = 0;
 
   productDetailsForm = new FormGroup({
     productImage: new FormControl,
@@ -44,14 +46,12 @@ export class CatalogComponent implements OnInit {
     private catalogService: CatalogService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    ) {}
+  ) {}
 
   ngOnInit(): void {
     this.catalogService.getAll().subscribe(items => {
       this.items = items;
       this.itemsInCatalog = this.items.slice(0, this.itemsToShow);
-      console.log('what ',this.items)
-      console.log('what 2 ',this.itemsInCatalog)
       this.selectedInput = 'Name';
       this.sorted();
     });
@@ -95,7 +95,8 @@ export class CatalogComponent implements OnInit {
       thumbnailUrl: this.items[this.items.length-1].thumbnailUrl,
       url: this.items[this.items.length-1].thumbnailUrl,
     });
-    console.log(this.items)
+    this.onChangePage(this.currentPageQuantity)
+    console.log('1',this.currentPageQuantity)
     return this.items;
   }
 
@@ -137,11 +138,15 @@ export class CatalogComponent implements OnInit {
   }
 
   onSearch() {
+    this.onChangePage(this.currentPageQuantity)
+    this.filteredItems = this.items.slice(0, this.itemsToShow);
     if (this.searchText.length > 0) {
-      this.filteredItems = this.itemsInCatalog.filter((el: any) => {
+      this.filteredItems = this.items.filter((el: any) => {
         return el.name.includes(this.searchText) || el.description.includes(this.searchText);
       })
     }
+
+
   }
 
   onSubmit() {
@@ -180,8 +185,11 @@ export class CatalogComponent implements OnInit {
     return itemRef;
   }
 
-  onChangePage(quantity: any) {
+  onChangePage(quantity: number) {
+    this.currentPageQuantity = quantity;
+    console.log('q', this.currentPageQuantity)
     this.itemsInCatalog = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
+    return this.currentPageQuantity;
   }
 
 }
