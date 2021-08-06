@@ -1,5 +1,4 @@
 .catalog {
-  background-color: #fff;
   padding: 20px 30px;
   margin: 92px 0 30px;
 
@@ -81,8 +80,6 @@
 
       ul {
         list-style: none;
-        height: 550px;
-        overflow-y: scroll;
 
         li {
           border: 2px solid #000;
@@ -195,6 +192,7 @@
 
       @media (max-width: 767px) {
         width: 100%;
+        margin-top: 30px;
       }
 
       &-title-first {
@@ -222,6 +220,16 @@
 
         &::first-letter {
           text-transform: uppercase;
+        }
+
+        @media (max-width: 910px) {
+          font-size: 20px;
+          width: 260px;
+        }
+
+        @media (max-width: 767px) {
+          font-size: 18px;
+          width: 220px;
         }
       }
 
@@ -284,7 +292,23 @@
       }
 
       &-savebtn {
-        text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+
+        @media (max-width: 767px) {
+          margin-top: 10px;
+        }
+
+        .submit-access {
+          color: darkgreen;
+          font-size: 16px;
+          align-self: center;
+
+          @media (max-width: 767px) {
+            font-size: 12px;
+          }
+        }
 
         .save-btn {
           border: none;
@@ -299,61 +323,6 @@
             color: aquamarine;
             border: solid 1px aquamarine;
           }
-
-          @media (max-width: 767px) {
-            margin-top: 10px;
-          }
-        }
-      }
-    }
-  }
-
-  &-navigation {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    font-size: 20px;
-
-    @media (max-width: 767px) {
-      font-size: 16px;
-      gap: 25px;
-    }
-
-    &-leftbtn {
-
-      .left-btn {
-        border: solid black;
-        background-color: #fff;
-        border-width: 0 3px 3px 0;
-        display: inline-block;
-        padding: 5px;
-        transform: rotate(135deg);
-        -webkit-transform: rotate(135deg);
-        vertical-align: middle;
-
-        &:active {
-          border: solid aquamarine;
-          border-width: 0 3px 3px 0;
-        }
-      }
-    }
-
-    &-page {}
-
-    &-rightbtn {
-      .right-btn {
-        border: solid black;
-        background-color: #fff;
-        border-width: 0 3px 3px 0;
-        display: inline-block;
-        padding: 5px;
-        transform: rotate(-45deg);
-        -webkit-transform: rotate(-45deg);
-        vertical-align: middle;
-
-        &:active {
-          border: solid aquamarine;
-          border-width: 0 3px 3px 0;
         }
       }
     }

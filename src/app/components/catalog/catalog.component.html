@@ -11,9 +11,8 @@
 
     <div class="catalog-search-panel-selectinsert">
       <span>Sort by</span>
-      <select size="1">
-        <option value="name">name</option>
-        <option value="recently-added" (change)="sortByRecentlyAdded()">recently added</option>
+      <select size="1" (ngModelChange)="searchBySelect($event)" [ngModel]="selectedInput">
+        <option [value]="option" *ngFor="let option of searchOptions">{{option}}</option>
       </select>
     </div>
   </div>
@@ -23,7 +22,7 @@
     <ng-container *ngIf="!searchText">
       <div class="catalog-products-list">
         <ul>
-          <li *ngFor="let item of items" (change)="onItemClicked($event.target)" (change)="setFormValue()">
+          <li *ngFor="let item of itemsInCatalog" (change)="onItemClicked($event.target)" (change)="setFormValue()">
             <input type="radio" id="{{item.id}}" name="product">
             <label for="{{item.id}}">
 
@@ -102,11 +101,12 @@
 
         <div class="catalog-products-details-price">
           <p>Price</p>
-          <input type="text" value="{{chosenItem[0].price}}" formControlName="productPrice">$
+          <input type="text" pattern="[0-9]" value="{{chosenItem[0].price}}" formControlName="productPrice">$
         </div>
 
         <div class="catalog-products-details-savebtn">
-          <button class="save-btn" (click)="saveChangesOfProduct()">Save</button>
+          <div *ngIf="submitSaveBtn === 'submit'" class="submit-access" >Success</div>
+          <button type="submit" value='clicked' class="save-btn" mat-button (click)="openDialog()" (click)="saveChangesOfProduct()">Save</button>
         </div>
 
       </form>
@@ -115,17 +115,5 @@
 
   </div>
 
-  <div class="catalog-navigation">
-    <div class="catalog-navigation-leftbtn">
-      <button class="left-btn"></button>
-      Prev Page
-    </div>
-    <div class="catalog-navigation-page" (productsPage)="productsPage">
-      {{productsPage}} of 5
-    </div>
-    <div class="catalog-navigation-rightbtn">
-      Next Page
-      <button class="right-btn"></button>
-    </div>
-  </div>
+  <app-pagination [itemsArr]="items" [paginationStep]="itemsToShow" (changePage)="onChangePage($event)"></app-pagination>
 </section>

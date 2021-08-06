@@ -1,0 +1,47 @@
+.catalog-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  font-size: 20px;
+  margin-bottom: 20px;
+
+  @media (max-width: 767px) {
+    font-size: 16px;
+    gap: 25px;
+  }
+
+  &-leftbtn {
+
+    .left-btn {
+      font-size: 20px;
+      border: none;
+      background-color: #fff;
+
+      &:active {
+        color: aquamarine;
+      }
+
+      @media (max-width: 767px) {
+        font-size: 14px;
+      }
+    }
+  }
+
+  &-page {}
+
+  &-rightbtn {
+    .right-btn {
+      font-size: 20px;
+      border: none;
+      background-color: #fff;
+
+      &:active {
+        color: aquamarine;
+      }
+
+      @media (max-width: 767px) {
+        font-size: 14px;
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<div class="catalog-navigation">
+  <div class="catalog-navigation-leftbtn">
+    <button class="left-btn" (click)="prevPage()">< Prev Page</button>
+  </div>
+  <div class="catalog-navigation-page">
+    {{currentPage + 1}} of {{totalPages}}
+  </div>
+  <div class="catalog-navigation-rightbtn">
+    <button class="right-btn" (click)="nextPage()">Next Page ></button>
+  </div>
+</div>
