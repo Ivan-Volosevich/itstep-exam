@@ -18,6 +18,7 @@ export class CatalogComponent implements OnInit {
   items: CatalogItem[] = [];
   itemsInCatalog: CatalogItem[] = [];
   filteredItems: any;
+  savedArray: any;
   searchText = "";
   chosenItem: any;
   chosenItemId: any;
@@ -49,6 +50,7 @@ export class CatalogComponent implements OnInit {
       this.filteredItems = this.items.slice(0, this.itemsToShow);
       this.selectedInput = 'Name';
       this.sorted();
+      this.savedArray = this.items;
     });
   }
 
@@ -87,16 +89,28 @@ export class CatalogComponent implements OnInit {
   }
 
   addItem() {
-    this.itemsInCatalog.unshift({
-      creationDate: (new Date()).getTime(),
-      description: 'add desc',
-      id: (new Date()).getTime(),
-      name: 'product ' + (new Date()).getTime(),
-      price: 1000,
-      thumbnailUrl: this.itemsInCatalog[this.itemsInCatalog.length-1].thumbnailUrl,
-      url: this.itemsInCatalog[this.itemsInCatalog.length-1].thumbnailUrl,
-    });
-    if (this.filteredItems !== undefined) {
+    if (this.searchText.length === 0) {
+      this.itemsInCatalog.unshift({
+        creationDate: (new Date()).getTime(),
+        description: 'add desc',
+        id: (new Date()).getTime(),
+        name: 'product ' + (new Date()).getTime(),
+        price: 1000,
+        thumbnailUrl: this.itemsInCatalog[this.itemsInCatalog.length-1].thumbnailUrl,
+        url: this.itemsInCatalog[this.itemsInCatalog.length-1].thumbnailUrl,
+      });
+      this.items.unshift({
+        creationDate: (new Date()).getTime(),
+        description: 'add desc',
+        id: (new Date()).getTime(),
+        name: 'product ' + (new Date()).getTime(),
+        price: 1000,
+        thumbnailUrl: this.items[this.items.length-1].thumbnailUrl,
+        url: this.items[this.items.length-1].thumbnailUrl,
+      });
+      this.items = this.items.slice(0, this.items.length);
+      this.itemsInCatalog = this.itemsInCatalog.slice(0, this.itemsInCatalog.length);
+    } else if (this.searchText.length > 0) {
       this.filteredItems.unshift({
         creationDate: (new Date()).getTime(),
         description: 'add desc',
@@ -106,22 +120,25 @@ export class CatalogComponent implements OnInit {
         thumbnailUrl: this.filteredItems[this.filteredItems.length-1].thumbnailUrl,
         url: this.filteredItems[this.filteredItems.length-1].thumbnailUrl,
       });
+      console.log('new this.Items', this.items)
+      this.savedArray.unshift({
+        creationDate: (new Date()).getTime(),
+        description: 'add desc',
+        id: (new Date()).getTime(),
+        name: 'product ' + (new Date()).getTime(),
+        price: 1000,
+        thumbnailUrl: this.items[this.items.length-1].thumbnailUrl,
+        url: this.items[this.items.length-1].thumbnailUrl,
+      });
       this.filteredItems = this.filteredItems.slice(0, this.filteredItems.length);
+      console.log('new this.filteredItems', this.filteredItems)
+      console.log('new this.Items 2', this.savedArray)
+      this.savedArray = this.savedArray.slice(0, this.savedArray.length);
+      console.log('new this.Items 3', this.items)
     }
-    this.items.unshift({
-      creationDate: (new Date()).getTime(),
-      description: 'add desc',
-      id: (new Date()).getTime(),
-      name: 'product ' + (new Date()).getTime(),
-      price: 1000,
-      thumbnailUrl: this.items[this.items.length-1].thumbnailUrl,
-      url: this.items[this.items.length-1].thumbnailUrl,
-    });
 
-    this.items = this.items.slice(0, this.items.length);
-    this.itemsInCatalog = this.itemsInCatalog.slice(0, this.itemsInCatalog.length);
-    this.onChangePage(this.currentPageQuantity)
-    console.log('1',this.items)
+    // this.onChangePage(this.currentPageQuantity)
+    // this.items = this.savedArray;
     return this.items;
   }
 
@@ -159,26 +176,22 @@ export class CatalogComponent implements OnInit {
         return el.id !== +btnItem.value;
       })
     };
+    this.savedArray = this.items;
     return this.items;
   }
 
   onSearch() {
-    const saveArray = this.items;
-    console.log('onSearch 1: insert saveArray: ', saveArray);
+    this.items = this.savedArray;
     if (this.searchText.length > 0) {
       this.items = this.items.filter((el: any) => {
         return el.name.includes(this.searchText) || el.description.includes(this.searchText);
       })
       this.filteredItems = this.items.slice(0, this.itemsToShow);
-      console.log('onSearch 2 filter: saveArray & items: ', saveArray, this.items);
-
       return this.items;
-      // this.onChangePage(this.filteredItems.length)
-      // return this.filteredItems;
-    } else if (this.searchText.length === 0) {
-      console.log('onSearch 3 filter 0: saveArray & items: ', saveArray, this.items);
-      this.items = saveArray;
-      console.log('onSearch 4 f0 : saveArray & items: ', saveArray, this.items);
+    }
+    if (this.searchText.length === 0) {
+      this.items = this.savedArray;
+      this.sorted();
       return this.items;
     }
     return this.items;
@@ -210,6 +223,7 @@ export class CatalogComponent implements OnInit {
     setTimeout(()=>{
       this.submitSaveBtn = '';
     }, 10000);
+    this.savedArray = this.items;
     return this.productDetailsForm.value;
   }
 
