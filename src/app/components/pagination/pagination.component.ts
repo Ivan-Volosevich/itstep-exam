@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
-import { CatalogComponent } from '../catalog/catalog.component';
 
 @Component({
   selector: 'app-pagination',
@@ -16,7 +15,7 @@ export class PaginationComponent implements OnChanges{
 
   ngOnChanges() {
     this.changePage.emit(this.currentPage);
-    console.log('from pag ', this.currentPage)
+    console.log('from paginat ', this.currentPage)
     this.totalPages = Math.ceil(this.itemsArr.length / this.paginationStep);
 
     console.log(this.totalPages)
@@ -33,7 +32,6 @@ export class PaginationComponent implements OnChanges{
   nextPage() {
     this.ngOnChanges();
     if (this.totalPages > this.currentPage + 1) {
-      console.log('next', this.itemsArr)
       this.currentPage++;
       this.changePage.emit(this.currentPage)
     }
