@@ -48,7 +48,7 @@ export class CatalogComponent implements OnInit {
       this.items = items;
       this.itemsInCatalog = this.items.slice(0, this.itemsToShow);
       this.filteredItems = this.items.slice(0, this.itemsToShow);
-      this.selectedInput = 'Name';
+      this.selectedInput = this.searchOptions[0];
       this.sorted();
       this.savedArray = this.items;
     });
@@ -59,24 +59,28 @@ export class CatalogComponent implements OnInit {
       this.items.sort((a: any,b: any) => a.name > b.name ? 1 : -1);
       this.itemsInCatalog = this.items.slice(0, this.itemsToShow);
       this.filteredItems = this.items.slice(0, this.itemsToShow);
+      this.items = this.items.slice(0, this.items.length);
       return this.items;
 
     } else if (this.selectedInput === this.searchOptions[1]) {
       this.items.sort((a: any,b: any) => a.creationDate < b.creationDate ? 1 : -1);
       this.itemsInCatalog = this.items.slice(0, this.itemsToShow);
       this.filteredItems = this.items.slice(0, this.itemsToShow);
+      this.items = this.items.slice(0, this.items.length);
       return this.items;
 
     } else if (this.selectedInput === this.searchOptions[2]) {
       this.items.sort((a: any,b: any) => a.price > b.price ? 1 : -1);
       this.itemsInCatalog = this.items.slice(0, this.itemsToShow);
       this.filteredItems = this.items.slice(0, this.itemsToShow);
+      this.items = this.items.slice(0, this.items.length);
       return this.items;
 
     } else if (this.selectedInput === this.searchOptions[3]) {
-      this.items.sort((a: any,b: any) => a.price < b.price ? 1 : -1);
+      this.items = this.items.sort((a: any,b: any) => a.price < b.price ? 1 : -1);
       this.itemsInCatalog = this.items.slice(0, this.itemsToShow);
       this.filteredItems = this.items.slice(0, this.itemsToShow);
+      this.items = this.items.slice(0, this.items.length);
       return this.items;
     }
     return this.items;
@@ -89,6 +93,15 @@ export class CatalogComponent implements OnInit {
   }
 
   addItem() {
+    this.items.unshift({
+      creationDate: (new Date()).getTime(),
+      description: 'add desc',
+      id: (new Date()).getTime(),
+      name: 'product ' + (new Date()).getTime(),
+      price: 1000,
+      thumbnailUrl: this.items[0].thumbnailUrl,
+      url: this.items[0].url,
+    });
     if (this.searchText.length === 0) {
       this.itemsInCatalog.unshift({
         creationDate: (new Date()).getTime(),
@@ -96,20 +109,12 @@ export class CatalogComponent implements OnInit {
         id: (new Date()).getTime(),
         name: 'product ' + (new Date()).getTime(),
         price: 1000,
-        thumbnailUrl: this.itemsInCatalog[this.itemsInCatalog.length-1].thumbnailUrl,
-        url: this.itemsInCatalog[this.itemsInCatalog.length-1].thumbnailUrl,
+        thumbnailUrl: this.itemsInCatalog[0].thumbnailUrl,
+        url: this.itemsInCatalog[0].url,
       });
-      this.items.unshift({
-        creationDate: (new Date()).getTime(),
-        description: 'add desc',
-        id: (new Date()).getTime(),
-        name: 'product ' + (new Date()).getTime(),
-        price: 1000,
-        thumbnailUrl: this.items[this.items.length-1].thumbnailUrl,
-        url: this.items[this.items.length-1].thumbnailUrl,
-      });
-      this.items = this.items.slice(0, this.items.length);
       this.itemsInCatalog = this.itemsInCatalog.slice(0, this.itemsInCatalog.length);
+      this.savedArray = this.items;
+
     } else if (this.searchText.length > 0) {
       this.filteredItems.unshift({
         creationDate: (new Date()).getTime(),
@@ -117,28 +122,22 @@ export class CatalogComponent implements OnInit {
         id: (new Date()).getTime(),
         name: 'product ' + (new Date()).getTime(),
         price: 1000,
-        thumbnailUrl: this.filteredItems[this.filteredItems.length-1].thumbnailUrl,
-        url: this.filteredItems[this.filteredItems.length-1].thumbnailUrl,
+        thumbnailUrl: this.filteredItems[0].thumbnailUrl,
+        url: this.filteredItems[0].url,
       });
-      console.log('new this.Items', this.items)
       this.savedArray.unshift({
         creationDate: (new Date()).getTime(),
         description: 'add desc',
         id: (new Date()).getTime(),
         name: 'product ' + (new Date()).getTime(),
         price: 1000,
-        thumbnailUrl: this.items[this.items.length-1].thumbnailUrl,
-        url: this.items[this.items.length-1].thumbnailUrl,
+        thumbnailUrl: this.items[0].thumbnailUrl,
+        url: this.items[0].url,
       });
       this.filteredItems = this.filteredItems.slice(0, this.filteredItems.length);
-      console.log('new this.filteredItems', this.filteredItems)
-      console.log('new this.Items 2', this.savedArray)
       this.savedArray = this.savedArray.slice(0, this.savedArray.length);
-      console.log('new this.Items 3', this.items)
     }
-
-    // this.onChangePage(this.currentPageQuantity)
-    // this.items = this.savedArray;
+    this.items = this.items.slice(0, this.items.length);
     return this.items;
   }
 
@@ -150,9 +149,15 @@ export class CatalogComponent implements OnInit {
   }
 
   itemChosen() {
-    this.chosenItem = this.items.filter((el) => {
-      return el.id === +this.chosenItemId;
-    })
+    if (this.searchText.length > 0) {
+      this.chosenItem = this.filteredItems.filter((el: { id: number; }) => {
+        return el.id === +this.chosenItemId;
+      })
+    } else {
+      this.chosenItem = this.items.filter((el) => {
+        return el.id === +this.chosenItemId;
+      })
+    }
     return this.chosenItem[0];
   }
 
@@ -165,18 +170,25 @@ export class CatalogComponent implements OnInit {
   }
 
   deleteItem(btnItem: any) {
-    this.items = this.items.filter((el) => {
-      return el.id !== +btnItem.value;
-    });
-    this.itemsInCatalog = this.itemsInCatalog.filter((el) => {
-      return el.id !== +btnItem.value;
-    });
-    if (this.filteredItems !== undefined) {
+    if (this.searchText.length > 0) {
       this.filteredItems = this.filteredItems.filter((el: { id: number; }) => {
         return el.id !== +btnItem.value;
       })
-    };
-    this.savedArray = this.items;
+      this.items = this.items.filter((el) => {
+        return el.id !== +btnItem.value;
+      })
+      this.savedArray = this.savedArray.filter((el: { id: number; }) => {
+        return el.id !== +btnItem.value;
+      })
+    } else {
+      this.items = this.items.filter((el) => {
+        return el.id !== +btnItem.value;
+      });
+      this.itemsInCatalog = this.itemsInCatalog.filter((el) => {
+        return el.id !== +btnItem.value;
+      });
+      this.savedArray = this.items;
+    }
     return this.items;
   }
 
@@ -188,8 +200,7 @@ export class CatalogComponent implements OnInit {
       })
       this.filteredItems = this.items.slice(0, this.itemsToShow);
       return this.items;
-    }
-    if (this.searchText.length === 0) {
+    } else if (this.searchText.length === 0) {
       this.items = this.savedArray;
       this.sorted();
       return this.items;
@@ -208,23 +219,29 @@ export class CatalogComponent implements OnInit {
 
   saveChangesOfProduct() {
     this.productDetailsForm.setValue(this.productDetailsForm.value);
+    this.items = this.savedArray;
     this.items = this.items.map(obj => {
       if(obj.id === this.chosenItem[0].id) {
         this.chosenItem[0].url = this.productDetailsForm.controls['productImage'].value;
         this.chosenItem[0].name = this.productDetailsForm.controls['productName'].value;
         this.chosenItem[0].description = this.productDetailsForm.controls['productDescription'].value;
         this.chosenItem[0].price = this.productDetailsForm.controls['productPrice'].value;
+        if (this.searchText.length > 0) {
+          obj= this.chosenItem[0];
+        }
         return {...obj}
       }
       return obj;
     })
+    this.savedArray = this.items;
+    this.searchText = '';
+    this.onSearch();
     this.sorted();
     this.submitSaveBtn = 'submit';
     setTimeout(()=>{
       this.submitSaveBtn = '';
     }, 10000);
-    this.savedArray = this.items;
-    return this.productDetailsForm.value;
+    return this.items;
   }
 
   openDialog() {
@@ -237,8 +254,21 @@ export class CatalogComponent implements OnInit {
   onChangePage(quantity: number) {
     this.currentPageQuantity = quantity;
     this.itemsInCatalog = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
-    if (this.filteredItems !== undefined) {
+    if (this.searchText.length > 0) {
       this.filteredItems = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
+    }
+    if (this.itemsInCatalog.length === 0) {
+      if (this.items.length / this.itemsToShow % 1 === 0) {
+        quantity = Math.floor(this.items.length / this.itemsToShow) - 1;
+      } else {
+        quantity = Math.floor(this.items.length / this.itemsToShow);
+      }
+      this.itemsInCatalog = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
+      if (this.searchText.length > 0) {
+        this.filteredItems = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
+        return this.items
+      }
+      return this.items
     }
     return this.currentPageQuantity;
   }

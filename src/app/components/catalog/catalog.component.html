@@ -22,7 +22,7 @@
     <ng-container *ngIf="!searchText">
       <div class="catalog-products-list">
         <ul>
-          <li *ngFor="let item of itemsInCatalog" (change)="onItemClicked($event.target)" (change)="setFormValue()">
+          <li *ngFor="let item of itemsInCatalog" (click)="onItemClicked($event.target)" (change)="setFormValue()">
             <input type="radio" id="{{item.id}}" name="product">
             <label for="{{item.id}}">
 
@@ -49,7 +49,7 @@
     <ng-container *ngIf="searchText">
       <div class="catalog-products-list">
         <ul>
-          <li *ngFor="let item of filteredItems" (change)="onItemClicked($event.target)" (change)="setFormValue()">
+          <li *ngFor="let item of filteredItems" (click)="onItemClicked($event.target)" (change)="setFormValue()">
             <input type="radio" id="{{item.id}}" name="product">
             <label for="{{item.id}}">
 
