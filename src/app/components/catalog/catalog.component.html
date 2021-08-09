@@ -73,16 +73,18 @@
       </div>
     </ng-container>
 
+    <app-pagination [itemsArr]="items" [paginationStep]="itemsToShow" (changePage)="onChangePage($event)" class="pagination-mobile"></app-pagination>
+
     <div class="catalog-products-details">
 
       <div class="catalog-products-details-title-first" data-first-title="forDetails">
         Choose product for Details
       </div>
 
-      <form [formGroup]="productDetailsForm" *ngIf="itemChosen()">
+      <form [formGroup]="productDetailsForm" *ngIf="itemChosen()" (ngSubmit)="onSubmit()">
 
         <div class="catalog-products-details-title">
-          {{chosenItem[0].name}} Details
+          "{{chosenItem[0].name}}" Details
         </div>
 
         <div class="catalog-products-details-icon">
@@ -91,7 +93,10 @@
 
         <div class="catalog-products-details-name">
           <p>Name</p>
-          <input type="text" value="{{chosenItem[0].name}}" formControlName="productName">
+          <input type="text" value="{{chosenItem[0].name}}" formControlName="productName" required minlength="1">
+        </div>
+        <div *ngIf="productDetailsForm.controls['productName'].invalid && (productDetailsForm.controls['productName'].dirty || productDetailsForm.controls['productName'].touched)" class="alert">
+          Name is required. Min length is 2 symbols.
         </div>
 
         <div class="catalog-products-details-description">
@@ -101,12 +106,16 @@
 
         <div class="catalog-products-details-price">
           <p>Price</p>
-          <input type="text" pattern="[0-9]" value="{{chosenItem[0].price}}" formControlName="productPrice">$
+          <input type="number" min="1" value="{{chosenItem[0].price}}" formControlName="productPrice">$
+        </div>
+        <div *ngIf="productDetailsForm.controls['productPrice'].invalid && (productDetailsForm.controls['productPrice'].dirty || productDetailsForm.controls['productPrice'].touched)" class="alert">
+          Price should be greater than zero.
         </div>
 
         <div class="catalog-products-details-savebtn">
           <div *ngIf="submitSaveBtn === 'submit'" class="submit-access" >Success</div>
-          <button type="submit" value='clicked' class="save-btn" mat-button (click)="openDialog()" (click)="saveChangesOfProduct()">Save</button>
+          <div *ngIf="productDetailsForm.invalid" class="alert" >Disable to</div>
+          <button type="submit" value='clicked' class="save-btn" mat-button (click)="openDialog()" (click)="saveChangesOfProduct()" [disabled]="!productDetailsForm.valid">Save</button>
         </div>
 
       </form>
@@ -115,5 +124,5 @@
 
   </div>
 
-  <app-pagination [itemsArr]="items" [paginationStep]="itemsToShow" (changePage)="onChangePage($event)"></app-pagination>
+  <app-pagination [itemsArr]="items" [paginationStep]="itemsToShow" (changePage)="onChangePage($event)" class="pagination-desktop"></app-pagination>
 </section>

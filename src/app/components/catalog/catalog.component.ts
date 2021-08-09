@@ -32,9 +32,9 @@ export class CatalogComponent implements OnInit {
 
   productDetailsForm = new FormGroup({
     productImage: new FormControl,
-    productName: new FormControl,
+    productName: new FormControl(null, [Validators.required, Validators.minLength(2)]),
     productDescription: new FormControl,
-    productPrice: new FormControl(null, [Validators.min(1), Validators.pattern("[0-9]+")]),
+    productPrice: new FormControl(null, [Validators.required, Validators.min(1)]),
   })
 
   constructor(
@@ -209,11 +209,10 @@ export class CatalogComponent implements OnInit {
   }
 
   onSubmit() {
-    this.chosenItemPopup = this.chosenItem[0];
     if (this.productDetailsForm.valid) {
       return this.productDetailsForm.value;
     } else {
-      this.productDetailsForm.markAllAsTouched();
+      return this.productDetailsForm.markAllAsTouched();
     }
   }
 
@@ -255,6 +254,7 @@ export class CatalogComponent implements OnInit {
     this.currentPageQuantity = quantity;
     this.itemsInCatalog = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
     if (this.searchText.length > 0) {
+      console.log('le', this.filteredItems.length)
       this.filteredItems = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
     }
     if (this.itemsInCatalog.length === 0) {
