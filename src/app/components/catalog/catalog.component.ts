@@ -254,7 +254,6 @@ export class CatalogComponent implements OnInit {
     this.currentPageQuantity = quantity;
     this.itemsInCatalog = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
     if (this.searchText.length > 0) {
-      console.log('le', this.filteredItems.length)
       this.filteredItems = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
     }
     if (this.itemsInCatalog.length === 0) {
