@@ -14,7 +14,6 @@ import { PopupSuccessComponent } from '../popup-success/popup-success.component'
 })
 
 export class CatalogComponent implements OnInit {
-  catalogUrl = 'https://msbit-exam-products-store.firebaseio.com/products.json';
   items: CatalogItem[] = [];
   itemsInCatalog: CatalogItem[] = [];
   filteredItems: any;
@@ -22,13 +21,10 @@ export class CatalogComponent implements OnInit {
   searchText = "";
   chosenItem: any;
   chosenItemId: any;
-  chosenItemPopup: any;
-  chosenItemName: any;
   searchOptions: any[] = [ 'Name', 'Recently added', 'Price (from cheapest)', 'Price (from the most expensive)' ];
   selectedInput: any;
   submitSaveBtn!: string;
   itemsToShow = 4;
-  currentPageQuantity: number = 0;
 
   productDetailsForm = new FormGroup({
     productImage: new FormControl,
@@ -99,8 +95,8 @@ export class CatalogComponent implements OnInit {
       id: (new Date()).getTime(),
       name: 'product ' + (new Date()).getTime(),
       price: 1000,
-      thumbnailUrl: this.items[0].thumbnailUrl,
-      url: this.items[0].url,
+      thumbnailUrl: "http://placehold.it/150/92c952",
+      url: "http://placehold.it/600/92c952",
     });
     if (this.searchText.length === 0) {
       this.itemsInCatalog.unshift({
@@ -109,8 +105,8 @@ export class CatalogComponent implements OnInit {
         id: (new Date()).getTime(),
         name: 'product ' + (new Date()).getTime(),
         price: 1000,
-        thumbnailUrl: this.itemsInCatalog[0].thumbnailUrl,
-        url: this.itemsInCatalog[0].url,
+        thumbnailUrl: "http://placehold.it/150/92c952",
+        url: "http://placehold.it/600/92c952",
       });
       this.itemsInCatalog = this.itemsInCatalog.slice(0, this.itemsInCatalog.length);
       this.savedArray = this.items;
@@ -122,8 +118,8 @@ export class CatalogComponent implements OnInit {
         id: (new Date()).getTime(),
         name: 'product ' + (new Date()).getTime(),
         price: 1000,
-        thumbnailUrl: this.filteredItems[0].thumbnailUrl,
-        url: this.filteredItems[0].url,
+        thumbnailUrl: "http://placehold.it/150/92c952",
+        url: "http://placehold.it/600/92c952",
       });
       this.savedArray.unshift({
         creationDate: (new Date()).getTime(),
@@ -131,8 +127,8 @@ export class CatalogComponent implements OnInit {
         id: (new Date()).getTime(),
         name: 'product ' + (new Date()).getTime(),
         price: 1000,
-        thumbnailUrl: this.items[0].thumbnailUrl,
-        url: this.items[0].url,
+        thumbnailUrl: "http://placehold.it/150/92c952",
+        url: "http://placehold.it/600/92c952",
       });
       this.filteredItems = this.filteredItems.slice(0, this.filteredItems.length);
       this.savedArray = this.savedArray.slice(0, this.savedArray.length);
@@ -251,7 +247,6 @@ export class CatalogComponent implements OnInit {
   }
 
   onChangePage(quantity: number) {
-    this.currentPageQuantity = quantity;
     this.itemsInCatalog = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
     if (this.searchText.length > 0) {
       this.filteredItems = this.items.slice(quantity * this.itemsToShow, quantity * this.itemsToShow + this.itemsToShow);
@@ -269,7 +264,7 @@ export class CatalogComponent implements OnInit {
       }
       return this.items
     }
-    return this.currentPageQuantity;
+    return quantity;
   }
 
 }

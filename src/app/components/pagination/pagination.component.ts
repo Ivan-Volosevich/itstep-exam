@@ -16,14 +16,12 @@ export class PaginationComponent implements OnChanges{
   ngOnChanges() {
     this.changePage.emit(this.currentPage);
     this.totalPages = Math.ceil(this.itemsArr.length / this.paginationStep);
-    setTimeout(()=>{
-      if (this.totalPages <= this.currentPage) {
-        this.currentPage = this.totalPages - 1;
-      };
-    }, 500);
+    if (this.totalPages <= this.currentPage) {
+      this.currentPage = this.totalPages - 1;
+    }
     if (this.currentPage < 0) {
       this.currentPage = 0;
-    };
+    }
   }
 
   prevPage() {
